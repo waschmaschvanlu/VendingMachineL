@@ -33,6 +33,9 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
         _menuPool:ProcessMenus()
+			if not nearvendingmachine() and mainmenu:Visible() then
+				  _menuPool:CloseAllMenus()
+				end
         if nearvendingmachine() then
             ESX.ShowHelpNotification(Translation[Config.Locale]['nearprop'])
         if IsControlJustReleased(0, 38) then
