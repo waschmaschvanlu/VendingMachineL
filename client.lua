@@ -42,6 +42,10 @@ Citizen.CreateThread(function()
     end
 end)
 
+local ped = PlayerPedId()
+local VendingObject = prop_vend_soda_01
+local DispenseDict = {"mini@sprunk", "plyr_buy_drink_pt1"}
+local PocketAnims = {"mp_common_miss", "put_away_coke"}
 
 function openMenu() 
 
@@ -56,9 +60,27 @@ function openMenu()
     for k, v in pairs(Config.Items) do
         local drink = NativeUI.CreateItem(v.itemlabel, v.Description)
         drink:RightLabel('~b~' .. v.price .. Config.Currency)
-    mainmenu:AddItem(drink)
-    drink.Activated = function(sender, index)
-        TriggerServerEvent("Automat:Bezahlen", v.price, v.itemname)
+		mainmenu:AddItem(drink)
+		drink.Activated = function(sender, index)
+
+		ReqAnimDict(DispenseDict[1])
+		RequestAmbientAudioBank("VENDING_MACHINE")
+		HintAmbientAudioBank("VENDING_MACHINE", 0, -1)
+		SetPedCurrentWeaponVisible(ped, false, true, 1, 0)
+		SetPedResetFlag(ped, 322, true)
+
+		Citizen.Wait(1000)
+		TaskPlayAnim(ped, DispenseDict[1], DispenseDict[2], 8.0, 5.0, -1, 33, 1, 0, 0, 0)
+		Citizen.Wait(4200)
+		ReqAnimDict(PocketAnims[1])
+		TaskPlayAnim(ped, PocketAnims[1], PocketAnims[2], 8.0, 5.0, -1, 49, 1, 0, 0, 0)
+		Citizen.Wait(1000)
+		ClearPedTasks(ped)
+		ReleaseAmbientAudioBank()
+		RemoveAnimDict(DispenseDict[1])
+		RemoveAnimDict(PocketAnims[1])
+		
+		TriggerServerEvent("Automat:Bezahlen", v.price, v.itemname)
         ESX.ShowNotification(Translation[Config.Locale]['bought'] .. " " ..  v.itemlabel .. " " .. Translation[Config.Locale]['bought2'])
     end
     end
@@ -74,8 +96,15 @@ function nearvendingmachine()
             vendingPos = GetEntityCoords(vending)
             local dist = GetDistanceBetweenCoords(pos.x, pos.y, pos.z, vendingPos.x, vendingPos.y, vendingPos.z, true)
             if dist <= Config.Range then
-            return true
+				return true
             end
         end
     end
+end
+
+function ReqAnimDict(animDict)
+	RequestAnimDict(animDict)
+	while not HasAnimDictLoaded(animDict) do
+		Citizen.Wait(0)
+	end
 end

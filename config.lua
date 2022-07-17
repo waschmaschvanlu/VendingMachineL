@@ -3,28 +3,29 @@ Config.Vending = { -- https://gtahash.ru/?s=vend
 	{modelname = "prop_vend_soda_01"}
 }
 
-Config.Range = 3
+Config.Range = 1.5
 
 Config.Locale = "de"
 
 Translation = {
     ['de'] = {
-       ['nearprop'] = 'Drücke ~INPUT_CONTEXT~ um den Getränkeautomat zu öffnen',
+       ['nearprop'] = 'Getränkeautomat',
        ['MainMenuname'] = "Getränke Automat!",
-       ['MainMenuDesc'] = "Kälter als deine Ex-Freundin! <3",
-       ['bought'] = "Du hast eine Dose..",
-       ['bought2'] = "Gekauft!"
+       ['MainMenuDesc'] = "Aktuelle Temperatur +7°",
+       ['bought'] = "",
+       ['bought2'] = "Gekauft"
     },
     ['en'] = {
-        ['nearprop'] = 'Press ~INPUT_CONTEXT~ to Open the Vending-Machine',
+        ['nearprop'] = 'Vending-Machine',
         ['MainMenuname'] = "Vending Machine!",
-        ['MainMenuDesc'] = " Get your Cold beer here! <3",
-        ['bought'] = "You bought a can of",
+        ['MainMenuDesc'] = " Current temperature +7°",
+        ['bought'] = "bought",
         ['bought2'] = "!"
     } 
 }
 
 Config.Currency = "$"
 Config.Items = {
- {itemname = "cola", itemlabel = "Cola!", price = 20, Description = "So Süß wie du <3"}
+ {itemname = "cola", itemlabel = "Cola", price = 6, Description = ""}, --testgetränk
+ {itemname = "water", itemlabel = "Wasser", price = 3, Description = ""} --testgetränk
 }
